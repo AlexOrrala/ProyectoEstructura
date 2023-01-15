@@ -9,18 +9,7 @@ package TDA;
  * @author alex_
  */
 public class treemap {
-    private String directory;
     
-    
-    
-    public void GetDirectory(String directory){
-        this.directory = directory;
-    }
-    
-    public void cargarubicacion(){
-        
-    
-    }
     
     
     

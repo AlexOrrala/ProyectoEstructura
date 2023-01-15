@@ -4,10 +4,38 @@
  */
 package directory;
 
+import java.io.*;
+import javax.annotation.processing.FilerException;
+
 /**
  *
  * @author alex_
  */
 public class Directory {
+    private String directory;
     
+    
+    
+    public void SetDirectory(String directory){
+        this.directory = directory;
+    }
+    
+    public void cargarubicacion(){
+        File directoryfile = new File(directory);
+        Exception e = new FilerException(directory);
+        if(!directoryfile.isDirectory()){
+            e.printStackTrace();
+            return;
+        }
+        if(!directoryfile.exists()){
+            e.printStackTrace();
+            return;
+        } else {
+            File[] ficheros = directoryfile.listFiles();
+            for (File fichero : ficheros) {
+                System.out.println(fichero.getName());
+            }
+        }
+    
+    }
 }

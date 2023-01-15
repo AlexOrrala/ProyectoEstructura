@@ -4,6 +4,7 @@
  */
 package javafxapplication3;
 
+import directory.Directory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +27,7 @@ public class JavaFXApplication3 extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                System.out.println("Treemap");
             }
         });
         
@@ -35,9 +36,12 @@ public class JavaFXApplication3 extends Application {
         
         Scene scene = new Scene(root, 300, 250);
         
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Ingresar Dirección:");
         primaryStage.setScene(scene);
         primaryStage.show();
+        Directory d1 = new Directory();
+        d1.SetDirectory("C:\\Userss\\alex_\\OneDrive\\Imágenes\\Logitech Webcam");
+        d1.cargarubicacion();
     }
 
     /**
