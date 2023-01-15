@@ -13,6 +13,11 @@ import javax.annotation.processing.FilerException;
  */
 public class Directory {
     private String directory;
+
+    public Directory(String directory) {
+        this.directory = directory;
+    }
+    
     
     
     
@@ -22,7 +27,7 @@ public class Directory {
     
     public void cargarubicacion(){
         File directoryfile = new File(directory);
-        Exception e = new FilerException(directory);
+        Exception e = new FilerException(directory + " DIRECTORY NO VALID");
         if(!directoryfile.isDirectory()){
             e.printStackTrace();
             return;

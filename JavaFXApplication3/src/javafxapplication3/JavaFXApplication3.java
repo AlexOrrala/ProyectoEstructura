@@ -4,13 +4,19 @@
  */
 package javafxapplication3;
 
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import directory.Directory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -21,27 +27,36 @@ public class JavaFXApplication3 extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        
+        VBox h1 = new VBox();
+        Insets padd = new Insets(35, 35, 35, 35);
+        h1.setPadding(padd);
+        TextField direccionField = new TextField("Dirección");
         Button btn = new Button();
-        btn.setText("Say 'Hello World'");
+        
+        btn.setText("Buscar");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Treemap");
+                Directory d1 = new Directory("C:\\Users\\alex_\\OneDrive\\Imágenes\\Logitech Webcam");
+                d1.cargarubicacion();
             }
         });
         
         StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        direccionField.setAlignment(Pos.CENTER);
+        btn.setAlignment(Pos.CENTER);
+        h1.getChildren().add(direccionField);
+        h1.getChildren().add(btn);
+        root.getChildren().add(h1);
         
         Scene scene = new Scene(root, 300, 250);
         
-        primaryStage.setTitle("Ingresar Dirección:");
+        primaryStage.setTitle("Treemap");
         primaryStage.setScene(scene);
         primaryStage.show();
-        Directory d1 = new Directory();
-        d1.SetDirectory("C:\\Userss\\alex_\\OneDrive\\Imágenes\\Logitech Webcam");
-        d1.cargarubicacion();
+        
     }
 
     /**
