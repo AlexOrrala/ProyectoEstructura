@@ -1,23 +1,23 @@
 package TDA;
 
+import java.util.LinkedList;
+
 public class BinaryNode<T> {
     
     private T content;
-    private BinaryTree<T> left;
-    private BinaryTree<T> right;
+    private  LinkedList<BinaryTree<T>> childrens;
     
     public BinaryNode() {
-        this(null, null, null);
+        this(null, null);
     }
 
     public BinaryNode(T content) {
-        this(content, null, null);
+        this(content, null);
     }
 
-    public BinaryNode(T content, BinaryTree<T> left, BinaryTree<T> right) {
+    public BinaryNode(T content, BinaryTree<T> children) {
         this.content = content;
-        this.left = left;
-        this.right = right;
+        this.childrens.add(children);
     }
 
     public T getContent() {
@@ -28,20 +28,13 @@ public class BinaryNode<T> {
         this.content = content;
     }
 
-    public BinaryTree<T> getLeft() {
-        return left;
+
+    public LinkedList<BinaryTree<T>> getChildrens() {
+        return childrens;
     }
 
-    public void setLeft(BinaryTree<T> left) {
-        this.left = left;
-    }
-
-    public BinaryTree<T> getRight() {
-        return right;
-    }
-
-    public void setRight(BinaryTree<T> right) {
-        this.right = right;
+    public void addChildren(BinaryTree<T> children) {
+        childrens.add(children);
     }
     
 }

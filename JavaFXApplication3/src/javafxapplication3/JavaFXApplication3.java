@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -39,14 +40,16 @@ public class JavaFXApplication3 extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-                Directory d1 = new Directory("C:\\Users\\alex_\\OneDrive\\Imágenes\\Logitech Webcam");
-                d1.cargarubicacion();
+                Directory d1 = new Directory();
+                d1.cargarubicacion("C:\\Users\\alex_\\OneDrive\\Imágenes\\Logitech Webcam");
             }
         });
         
         StackPane root = new StackPane();
+        
         direccionField.setAlignment(Pos.CENTER);
         btn.setAlignment(Pos.CENTER);
+        
         h1.getChildren().add(direccionField);
         h1.getChildren().add(btn);
         root.getChildren().add(h1);

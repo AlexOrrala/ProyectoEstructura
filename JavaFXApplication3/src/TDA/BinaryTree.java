@@ -2,6 +2,7 @@ package TDA;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -31,30 +32,25 @@ public class BinaryTree<T> {
         this.root = root;
     }
 
-    public void setLeft(BinaryTree<T> tree) {
-        this.root.setLeft(tree);
+
+    public void addChildren(BinaryTree<T> tree) {
+        this.root.addChildren(tree);
     }
 
-    public void setRight(BinaryTree<T> tree) {
-        this.root.setRight(tree);
+    public LinkedList<BinaryTree<T>> getChildrens() {
+        return this.root.getChildrens();
     }
 
-    public BinaryTree<T> getLeft() {
-        return this.root.getLeft();
-    }
-
-    public BinaryTree<T> getRight() {
-        return this.root.getRight();
-    }
 
     public boolean isEmpty() {
         return this.root == null;
     }
 
     public boolean isLeaf() {
-        return this.root.getLeft() == null && this.root.getRight() == null;
+        return this.root.getChildrens()== null;
     }
-
+    
+    /*
     public int countLeavesRecursive() {
         if (this.isEmpty()) {
             return 0;
@@ -234,7 +230,7 @@ public class BinaryTree<T> {
             }
         }
     }
-
+    */
     private int recursivecountDescendants() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
