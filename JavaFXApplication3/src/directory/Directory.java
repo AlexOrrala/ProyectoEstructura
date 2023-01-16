@@ -17,6 +17,22 @@ public class Directory {
     private String peso;
     private boolean isdirectory;
     
+    
+    public Directory(){
+        this(null, 0, false);
+    }
+    
+    public Directory(boolean isdirectory){
+        this(null, 0, isdirectory);
+    }
+    
+    public Directory(String color,float peso,boolean isdirectory){
+        this.color = color;
+        this.peso = peso;
+        this.isdirectory = isdirectory;
+    
+    }
+    
     public String colors(String ext){
         
         switch (ext) {
@@ -45,11 +61,17 @@ public class Directory {
         if(!directoryfile.exists()){
             e.printStackTrace();
         } else {
+            BinaryTree<Directory> arbol = new BinaryTree(directoryfile.getName());
             File[] ficheros = directoryfile.listFiles();
             for (File fichero : ficheros) {
                 if(!fichero.isDirectory()){
-                float tamano = fichero.length();
-                System.out.println(tamano);
+                    System.out.println(fichero.getName());
+                    String arreglado = fichero.getName().replace(".", ",");
+                    String[] extension = arreglado.split(",");
+                    float peso = fichero.length();
+                    arbol.addChildren(new BinaryTree(new Directory(colors(extension[1]), peso, false)));
+                }else{
+                    cargarubicacion(directory+"\\"+fichero.getName());
                 }
                 
             }

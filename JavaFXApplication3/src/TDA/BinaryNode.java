@@ -17,6 +17,7 @@ public class BinaryNode<T> {
 
     public BinaryNode(T content, BinaryTree<T> children) {
         this.content = content;
+        this.childrens = new LinkedList<BinaryTree<T>>();
         this.childrens.add(children);
     }
 
