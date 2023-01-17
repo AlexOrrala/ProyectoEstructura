@@ -21,7 +21,7 @@ public class BinaryTree<T> {
     }
 
     public BinaryTree(T content) {
-        this.root = new BinaryNode<>(content);
+        this.root = new BinaryNode<T>(content);
     }
 
     public BinaryNode<T> getRoot() {

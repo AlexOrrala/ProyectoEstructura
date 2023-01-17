@@ -4,7 +4,7 @@
  */
 package javafxapplication3;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import TDA.BinaryTree;
 import directory.Directory;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -41,7 +41,7 @@ public class JavaFXApplication3 extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Directory d1 = new Directory();
-                d1.cargarubicacion("C:\\Users\\alex_\\OneDrive\\Imágenes\\Logitech Webcam");
+                BinaryTree arbol = d1.cargarubicacion("C:\\Users\\CltControl\\Documents\\Zoom");
             }
         });
         

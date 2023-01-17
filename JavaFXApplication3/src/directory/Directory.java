@@ -4,8 +4,12 @@
  */
 package directory;
 
+import TDA.BinaryTree;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.processing.FilerException;
 
 /**
@@ -13,24 +17,32 @@ import javax.annotation.processing.FilerException;
  * @author alex_
  */
 public class Directory {
+    private String name;
     private String color;
-    private String peso;
+    private long peso;
     private boolean isdirectory;
     
     
     public Directory(){
-        this(null, 0, false);
+        this(null,null, 0, false);
     }
     
-    public Directory(boolean isdirectory){
-        this(null, 0, isdirectory);
+    public Directory(boolean isdirectory,String name){
+        this(name,null, 0, isdirectory);
     }
     
-    public Directory(String color,float peso,boolean isdirectory){
+    public Directory(String name,String color,long peso,boolean isdirectory){
+        this.name = name;
         this.color = color;
         this.peso = peso;
         this.isdirectory = isdirectory;
     
+    }
+    public void setPeso(long peso){
+       this.peso = peso;
+    }
+    public long getPeso(){
+        return peso;
     }
     
     public String colors(String ext){
@@ -51,8 +63,9 @@ public class Directory {
         } 
     }
     
-    public Stack cargarubicacion(String directory){
+    public BinaryTree<Directory> cargarubicacion(String directory){
         Stack<Directory> retornar = new Stack<Directory>();
+        BinaryTree<Directory> arbol = null;
         File directoryfile = new File(directory);
         Exception e = new FilerException(directory + " DIRECTORY NO VALID");
         if(!directoryfile.isDirectory()){
@@ -61,21 +74,31 @@ public class Directory {
         if(!directoryfile.exists()){
             e.printStackTrace();
         } else {
-            BinaryTree<Directory> arbol = new BinaryTree(directoryfile.getName());
+            arbol = new BinaryTree(new Directory(true, directoryfile.getName()));
             File[] ficheros = directoryfile.listFiles();
+            try {
+                System.out.println("Valor:"+Files.size(directoryfile.toPath()));
+            } catch (IOException ex) {
+                Logger.getLogger(Directory.class.getName()).log(Level.SEVERE, null, ex);
+            }
             for (File fichero : ficheros) {
                 if(!fichero.isDirectory()){
                     System.out.println(fichero.getName());
                     String arreglado = fichero.getName().replace(".", ",");
                     String[] extension = arreglado.split(",");
-                    float peso = fichero.length();
-                    arbol.addChildren(new BinaryTree(new Directory(colors(extension[1]), peso, false)));
+                    long peso = fichero.length();
+                    arbol.addChildren(new BinaryTree(new Directory(extension[0],colors(extension[1]), peso, false)));
+                    
+                    long pesopadre = arbol.getRoot().getContent().getPeso() + peso;
+                    
+                    arbol.getRoot().getContent().setPeso(pesopadre);
                 }else{
-                    cargarubicacion(directory+"\\"+fichero.getName());
+                    arbol.addChildren(cargarubicacion(directory+"\\"+fichero.getName()));
+                    
                 }
                 
             }
         }
-        return retornar;
+        return arbol;
     }
 }
