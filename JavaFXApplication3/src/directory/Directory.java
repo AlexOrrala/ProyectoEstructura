@@ -7,6 +7,9 @@ package directory;
 import TDA.BinaryTree;
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +47,31 @@ public class Directory {
     public long getPeso(){
         return peso;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public boolean isIsdirectory() {
+        return isdirectory;
+    }
+
+    public void setIsdirectory(boolean isdirectory) {
+        this.isdirectory = isdirectory;
+    }
+    
     
     public String colors(String ext){
         
@@ -76,16 +104,23 @@ public class Directory {
         } else {
             arbol = new BinaryTree(new Directory(true, directoryfile.getName()));
             File[] ficheros = directoryfile.listFiles();
-            try {
-                System.out.println("Valor:"+Files.size(directoryfile.toPath()));
-            } catch (IOException ex) {
-                Logger.getLogger(Directory.class.getName()).log(Level.SEVERE, null, ex);
+            LinkedList<File> arreglado=  new LinkedList<>();
+            for (File fichero : ficheros) {
+                if(!fichero.getName().contains(".")){
+                arreglado.add(fichero);
+                }
             }
             for (File fichero : ficheros) {
+                if(fichero.getName().contains(".")){
+                arreglado.add(fichero);
+                }
+            }
+            for (File fichero : arreglado) {
                 if(!fichero.isDirectory()){
+                    
                     System.out.println(fichero.getName());
-                    String arreglado = fichero.getName().replace(".", ",");
-                    String[] extension = arreglado.split(",");
+                    String arreglado2 = fichero.getName().replace(".", ",");
+                    String[] extension = arreglado2.split(",");
                     long peso = fichero.length();
                     arbol.addChildren(new BinaryTree(new Directory(extension[0],colors(extension[1]), peso, false)));
                     

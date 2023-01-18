@@ -6,6 +6,7 @@ package javafxapplication3;
 
 import TDA.BinaryTree;
 import directory.Directory;
+import java.util.LinkedList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,13 +37,11 @@ public class JavaFXApplication3 extends Application {
         Button btn = new Button();
         
         btn.setText("Buscar");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                Directory d1 = new Directory();
-                BinaryTree arbol = d1.cargarubicacion("C:\\Users\\CltControl\\Documents\\Zoom");
-            }
+        btn.setOnAction((ActionEvent event) -> {
+            Directory d1 = new Directory();
+            BinaryTree<Directory> arbol = d1.cargarubicacion(direccionField.getText());
+            LinkedList<BinaryTree<Directory>>lista = arbol.getChildrens();
+            System.out.println("---------------------------");
         });
         
         StackPane root = new StackPane();
