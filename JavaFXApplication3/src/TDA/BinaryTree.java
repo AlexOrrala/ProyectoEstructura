@@ -47,9 +47,14 @@ public class BinaryTree<T> {
     }
 
     public boolean isLeaf() {
-        return this.root.getChildrens()== null;
+        
+        return this.root.getChildrens().size() == 0;
     }
-    
+    public int contadorHijos(){
+        int hijos=0;
+        hijos = getChildrens().size();
+        return hijos;
+    }
     /*
     public int countLeavesRecursive() {
         if (this.isEmpty()) {
