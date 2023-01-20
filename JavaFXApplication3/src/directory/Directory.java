@@ -161,7 +161,7 @@ public class Directory {
                     
                     long pesopadre = arbol.getRoot().getContent().getPeso() + peso;
                     arbol.getRoot().getContent().sumarpesocolor("."+extension[1], pesopadre);
-                    System.out.println("."+extension[0]);
+                    //System.out.println("."+extension[0]);
                     arbol.getRoot().getContent().setPeso(pesopadre);
                 }else{
                     //BinaryTree<Directory> padre = new BinaryTree<Directory>((cargarubicacion(directory+"\\"+fichero.getName())).getRoot().getContent());

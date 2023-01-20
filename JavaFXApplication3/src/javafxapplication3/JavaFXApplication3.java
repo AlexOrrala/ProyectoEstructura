@@ -224,7 +224,7 @@ public class JavaFXApplication3 extends Application {
             verticalhijos.setSpacing(espacio);
               
                     HashMap<String, Float> mapa = padre.getRoot().getContent().getColorespeso();
-                    System.out.println(mapa.size());
+                    //System.out.println(mapa.size());
                     for (Map.Entry<String, Float> entry : mapa.entrySet()) {
                         Button b1 = new Button();
                         double hije1 = entry.getValue();
