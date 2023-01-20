@@ -8,7 +8,9 @@ import TDA.BinaryTree;
 import directory.Directory;
 import java.awt.Desktop;
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
@@ -45,10 +48,29 @@ public class JavaFXApplication3 extends Application {
         h1.setPadding(padd);
         
         Button btn = new Button();
-        Button btnpro = new Button("Treemap");
+        Button btnpro = new Button();
+        btnpro.setText("Treemap");
+        btnpro.setAlignment(Pos.CENTER);
+
         btn.setText("Buscar");
         btn.setAlignment(Pos.CENTER);
         //btn.setLayoutY(150);
+        
+        btnpro.setOnAction((event) -> {
+           Directory d1 = new Directory();
+            BinaryTree<Directory> arbol = d1.cargarubicacion(direccionField.getText());
+            LinkedList<BinaryTree<Directory>>lista = arbol.getChildrens();
+            //System.out.println("---------------------------");
+            //System.out.println(arbol.contadorHijos());
+            LinkedList<BinaryTree<Directory>> padres = new LinkedList<BinaryTree<Directory>>();
+            LinkedList<BinaryTree<Directory>> hijos = new LinkedList<BinaryTree<Directory>>();
+            recorrerarbolpadre(lista,padres);
+            recorrerarbolhijos(lista,hijos);
+            Colorear2(padres, arbol,hijos);
+            
+            
+        });
+        
         btn.setOnAction((ActionEvent event) -> {
             Directory d1 = new Directory();
             BinaryTree<Directory> arbol = d1.cargarubicacion(direccionField.getText());
@@ -59,7 +81,6 @@ public class JavaFXApplication3 extends Application {
             LinkedList<BinaryTree<Directory>> hijos = new LinkedList<BinaryTree<Directory>>();
             recorrerarbolpadre(lista,padres);
             recorrerarbolhijos(lista,hijos);
-            System.out.println(padres.size());
             Colorear(padres, arbol,hijos);
             
         });
@@ -71,6 +92,7 @@ public class JavaFXApplication3 extends Application {
         
         h1.getChildren().add(direccionField);
         h1.getChildren().add(btn);
+        h1.getChildren().add(btnpro);
         root.getChildren().add(h1);
         
         Scene scene = new Scene(root, 300, 250);
@@ -110,7 +132,25 @@ public class JavaFXApplication3 extends Application {
             } 
         }
     }
-
+    private void Colorear2(LinkedList<BinaryTree<Directory>> padres, BinaryTree<Directory> arbol, LinkedList<BinaryTree<Directory>> hijos) {
+        Stage stagecolor = new Stage();
+        
+        HBox horizontalpadres = new HBox();
+        VBox verticalfuera = new VBox();
+        TextField nombre = nombredir(arbol.getRoot().getContent().getName(),arbol.getRoot().getContent().getPeso(),1000);
+        verticalfuera.setSpacing(1);
+        verticalfuera.getChildren().add(nombre);
+        verticalfuera.getChildren().add(horizontalpadres);
+        
+        
+        crearcuadrados2(horizontalpadres, padres, arbol, 2);
+        
+        SplitPane colores = new SplitPane(verticalfuera);
+        
+        Scene scenecolors = new Scene(colores, 1000, 1000);
+        stagecolor.setScene(scenecolors);
+        stagecolor.show();
+    }
     
     
     private void Colorear(LinkedList<BinaryTree<Directory>> padres, BinaryTree<Directory> arbol, LinkedList<BinaryTree<Directory>> hijos) {
@@ -123,37 +163,19 @@ public class JavaFXApplication3 extends Application {
         verticalfuera.getChildren().add(nombre);
         verticalfuera.getChildren().add(horizontalpadres);
         
-        crearcuadrados(horizontalpadres,padres,arbol,10);
+        crearcuadrados(horizontalpadres,padres,arbol,20);
+        VBox verticalhijos = new VBox();
+
         for (BinaryTree<Directory> hijo : hijos) {
-            
-            
-        }
-        
-        StackPane colores = new StackPane(verticalfuera);
-        Scene scenecolors = new Scene(colores, 1000, 1000);
-        stagecolor.setScene(scenecolors);
-        stagecolor.show();
-        
-    }
-
-    
-
-    private void crearcuadrados(HBox horizontalpadres,LinkedList<BinaryTree<Directory>> padres, BinaryTree<Directory> arbol, int espacio) {
-        for (BinaryTree<Directory> padre : padres) {
-            int ancho = (int) ((padre.getRoot().getContent().getPeso()/arbol.getRoot().getContent().getPeso())/padres.size());
-            TextField nombre = nombredir(padre.getRoot().getContent().getName(),padre.getRoot().getContent().getPeso(),ancho);
-            LinkedList<BinaryTree<Directory>> hijos = padre.getChildrens();
-            VBox verticalhijos = new VBox();
-            verticalhijos.getChildren().add(nombre);
-            verticalhijos.setSpacing(espacio);
-            for (BinaryTree<Directory> hijo : hijos) {
-                
                 if(hijo.isLeaf()){
-                    
                     Button b1 = new Button();
                     long dimension = (long) factorpeso(hijo.getRoot().getContent().getPeso(),arbol.getRoot().getContent().getPeso());
                     b1.setMaxSize(dimension,dimension);
+                    double hije1 = hijo.getRoot().getContent().getPeso();
+                    double padredouble1 = arbol.getRoot().getContent().getPeso();
+                    double ancho1 = (hije1/padredouble1)*1000;
                     b1.setStyle(hijo.getRoot().getContent().getColor());
+                    b1.setMaxSize(ancho1-10, ancho1-10);
                     b1.setOnAction((event) -> {
                         try{
                             
@@ -163,7 +185,6 @@ public class JavaFXApplication3 extends Application {
                             }
                             Desktop desktop = Desktop.getDesktop();
                             if(file.exists()){
-                                System.out.println("xd");
                                 desktop.open(file);
                             }
                         }catch(Exception e){
@@ -174,19 +195,113 @@ public class JavaFXApplication3 extends Application {
                 } else{
                     LinkedList<BinaryTree<Directory>> nuevopadre = new LinkedList<BinaryTree<Directory>>();
                     HBox horizontalpadre = new HBox();
-                    horizontalpadre.setSpacing(5);
+                    horizontalpadre.setSpacing(2);
+                    nuevopadre.add(hijo);
+                    //System.out.println("x:"+arbol.getRoot().getContent().getPeso());
+                    crearcuadrados(horizontalpadre,nuevopadre, arbol, 2);
+                    verticalhijos.getChildren().add(horizontalpadre);
+                }
+            
+            
+        }
+        
+        StackPane colores = new StackPane(verticalfuera);
+        Scene scenecolors = new Scene(colores, 1000, 1000);
+        stagecolor.setScene(scenecolors);
+        stagecolor.show();
+        
+    }
+    private void crearcuadrados2(HBox horizontalpadres,LinkedList<BinaryTree<Directory>> padres, BinaryTree<Directory> arbol, int espacio) {
+        for (BinaryTree<Directory> padre : padres) {
+            double hije = padre.getRoot().getContent().getPeso();
+            double padredouble = arbol.getRoot().getContent().getPeso();
+            double ancho = (hije/padredouble)*1000;
+            TextField nombre = nombredir(padre.getRoot().getContent().getName(),padre.getRoot().getContent().getPeso(),ancho);
+            LinkedList<BinaryTree<Directory>> hijos = padre.getChildrens();
+            VBox verticalhijos = new VBox();
+            verticalhijos.getChildren().add(nombre);
+            verticalhijos.setSpacing(espacio);
+            for (BinaryTree<Directory> hijo : hijos) {
+                
+                if(!hijo.isLeaf()){
+                    HashMap<String, Float> mapa = hijo.getRoot().getContent().getColorespeso();
+                    for (Map.Entry<String, Float> entry : mapa.entrySet()) {
+                        Button b1 = new Button();
+                        double hije1 = entry.getValue();
+                        double padredouble1 = padre.getRoot().getContent().getPeso();
+                        double ancho1 = (hije1/padredouble1)*1000;
+                        System.out.println(entry.getValue());
+                        if(ancho1>0){
+                        b1.setMaxSize(ancho1,ancho1);
+                        }else{
+                            b1.setMaxSize(100,100);
+                        }
+                        b1.setPrefHeight(ancho1);
+                        b1.setStyle(hijo.getRoot().getContent().colors(entry.getKey()) );
+                        verticalhijos.getChildren().add(b1);    
+                    }
+                    }
+            }
+            horizontalpadres.getChildren().add(verticalhijos);
+        }
+    }
+        
+
+    private void crearcuadrados(HBox horizontalpadres,LinkedList<BinaryTree<Directory>> padres, BinaryTree<Directory> arbol, int espacio) {
+        for (BinaryTree<Directory> padre : padres) {
+            double hije = padre.getRoot().getContent().getPeso();
+            double padredouble = arbol.getRoot().getContent().getPeso();
+            double ancho = (hije/padredouble)*1000;
+            TextField nombre = nombredir(padre.getRoot().getContent().getName(),padre.getRoot().getContent().getPeso(),ancho);
+            LinkedList<BinaryTree<Directory>> hijos = padre.getChildrens();
+            VBox verticalhijos = new VBox();
+            verticalhijos.getChildren().add(nombre);
+            verticalhijos.setSpacing(espacio);
+            for (BinaryTree<Directory> hijo : hijos) {
+                
+                if(hijo.isLeaf()){
+                    
+                    
+                    Button b1 = new Button();
+                    long dimension = (long) factorpeso(hijo.getRoot().getContent().getPeso(),arbol.getRoot().getContent().getPeso());
+                    b1.setMaxSize(dimension,dimension);
+                    
+                    double hije1 = hijo.getRoot().getContent().getPeso();
+                    double padredouble1 = padre.getRoot().getContent().getPeso();
+                    double ancho1 = (hije1/padredouble1)*1000;
+                    b1.setStyle(hijo.getRoot().getContent().getColor());
+                    b1.setMaxSize(ancho1, ancho1);
+                    b1.setOnAction((event) -> {
+                        try{
+                            
+                            File file = new File(hijo.getRoot().getContent().getDirectory());
+                            if(!Desktop.isDesktopSupported()){
+                            System.out.println("not supported");
+                            }
+                            Desktop desktop = Desktop.getDesktop();
+                            if(file.exists()){
+                                desktop.open(file);
+                            }
+                        }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                });
+                    verticalhijos.getChildren().add(b1);
+                } else{
+                    LinkedList<BinaryTree<Directory>> nuevopadre = new LinkedList<BinaryTree<Directory>>();
+                    HBox horizontalpadre = new HBox();
+                    horizontalpadre.setSpacing(2);
                     nuevopadre.add(hijo);
                     System.out.println("x:"+padre.getRoot().getContent().getPeso());
                     crearcuadrados(horizontalpadre,nuevopadre, padre, 2);
                     verticalhijos.getChildren().add(horizontalpadre);
                 }
             }
-            
             horizontalpadres.getChildren().add(verticalhijos);
         }
     }
     
-    private TextField nombredir(String name, Long peso, float ancho) {
+    private TextField nombredir(String name, Long peso, double ancho) {
         TextField nombre = null;
         if(peso >= (1048576)){
         nombre = new TextField("."+name+"("+peso/(1024*1024)+"MB)");
@@ -198,8 +313,7 @@ public class JavaFXApplication3 extends Application {
         
         nombre.setEditable(false);
         nombre.setAlignment(Pos.CENTER);
-        System.out.println(ancho);
-        nombre.setMaxSize(150, 100);
+        nombre.setPrefWidth(peso);
         nombre.setStyle("-fx-background-color: #CB3FBE");
         return nombre;
     }
