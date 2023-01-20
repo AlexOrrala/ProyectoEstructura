@@ -217,31 +217,29 @@ public class JavaFXApplication3 extends Application {
             double padredouble = arbol.getRoot().getContent().getPeso();
             double ancho = (hije/padredouble)*1000;
             TextField nombre = nombredir(padre.getRoot().getContent().getName(),padre.getRoot().getContent().getPeso(),ancho);
+            
             LinkedList<BinaryTree<Directory>> hijos = padre.getChildrens();
             VBox verticalhijos = new VBox();
             verticalhijos.getChildren().add(nombre);
             verticalhijos.setSpacing(espacio);
-            for (BinaryTree<Directory> hijo : hijos) {
-                
-                if(!hijo.isLeaf()){
-                    HashMap<String, Float> mapa = hijo.getRoot().getContent().getColorespeso();
+              
+                    HashMap<String, Float> mapa = padre.getRoot().getContent().getColorespeso();
+                    System.out.println(mapa.size());
                     for (Map.Entry<String, Float> entry : mapa.entrySet()) {
                         Button b1 = new Button();
                         double hije1 = entry.getValue();
                         double padredouble1 = padre.getRoot().getContent().getPeso();
                         double ancho1 = (hije1/padredouble1)*1000;
-                        System.out.println(entry.getValue());
+                        //System.out.println(entry.getKey());
                         if(ancho1>0){
                         b1.setMaxSize(ancho1,ancho1);
                         }else{
                             b1.setMaxSize(100,100);
                         }
                         b1.setPrefHeight(ancho1);
-                        b1.setStyle(hijo.getRoot().getContent().colors(entry.getKey()) );
+                        b1.setStyle(padre.getRoot().getContent().colors(entry.getKey()));
                         verticalhijos.getChildren().add(b1);    
                     }
-                    }
-            }
             horizontalpadres.getChildren().add(verticalhijos);
         }
     }
@@ -257,20 +255,22 @@ public class JavaFXApplication3 extends Application {
             VBox verticalhijos = new VBox();
             verticalhijos.getChildren().add(nombre);
             verticalhijos.setSpacing(espacio);
+            HBox horizontal = new HBox();
+            horizontal.setSpacing(10);
+            horizontal.autosize();
+            verticalhijos.autosize();
             for (BinaryTree<Directory> hijo : hijos) {
                 
                 if(hijo.isLeaf()){
                     
                     
                     Button b1 = new Button();
-                    long dimension = (long) factorpeso(hijo.getRoot().getContent().getPeso(),arbol.getRoot().getContent().getPeso());
-                    b1.setMaxSize(dimension,dimension);
                     
                     double hije1 = hijo.getRoot().getContent().getPeso();
                     double padredouble1 = padre.getRoot().getContent().getPeso();
                     double ancho1 = (hije1/padredouble1)*1000;
                     b1.setStyle(hijo.getRoot().getContent().getColor());
-                    b1.setMaxSize(ancho1, ancho1);
+                    b1.setMaxHeight(ancho1);
                     b1.setOnAction((event) -> {
                         try{
                             
@@ -286,17 +286,17 @@ public class JavaFXApplication3 extends Application {
                         e.printStackTrace();
                     }
                 });
-                    verticalhijos.getChildren().add(b1);
+                    horizontal.getChildren().add(b1);
                 } else{
                     LinkedList<BinaryTree<Directory>> nuevopadre = new LinkedList<BinaryTree<Directory>>();
                     HBox horizontalpadre = new HBox();
                     horizontalpadre.setSpacing(2);
                     nuevopadre.add(hijo);
-                    System.out.println("x:"+padre.getRoot().getContent().getPeso());
                     crearcuadrados(horizontalpadre,nuevopadre, padre, 2);
                     verticalhijos.getChildren().add(horizontalpadre);
                 }
             }
+            verticalhijos.getChildren().add(horizontal);
             horizontalpadres.getChildren().add(verticalhijos);
         }
     }

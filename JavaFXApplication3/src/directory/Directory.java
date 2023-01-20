@@ -70,6 +70,7 @@ public class Directory {
         colorespeso.put(key, colorespeso.get(key)+valor);
         }else{
             anadirpesocolor(key, valor);
+            //System.out.println(key+":"+valor);
         }
         
     }
@@ -106,6 +107,8 @@ public class Directory {
                 return "-fx-background-color: #F3FF33"; // amarillo
             case ".docx":
                 return "-fx-background-color: #478DEC"; // azul
+            case ".xlsx":
+                return "-fx-background-color: #008000"; // verde
             case "":
                 return "-fx-background-color: #FFF700"; //armarillo juerte
             default:
@@ -158,6 +161,7 @@ public class Directory {
                     
                     long pesopadre = arbol.getRoot().getContent().getPeso() + peso;
                     arbol.getRoot().getContent().sumarpesocolor("."+extension[1], pesopadre);
+                    System.out.println("."+extension[0]);
                     arbol.getRoot().getContent().setPeso(pesopadre);
                 }else{
                     //BinaryTree<Directory> padre = new BinaryTree<Directory>((cargarubicacion(directory+"\\"+fichero.getName())).getRoot().getContent());
